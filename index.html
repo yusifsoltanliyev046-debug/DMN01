@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DMN01 | Online Mağaza</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:Arial, sans-serif;
+  background:#f4f6f8;
+  color:#222;
+}
+
+header{
+  background:#111827;
+  color:white;
+  padding:15px 5%;
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+
+.top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.logo{
+  font-size:28px;
+  font-weight:bold;
+  color:#00d084;
+}
+
+.search{
+  flex:1;
+  max-width:500px;
+  position:relative;
+}
+
+.search input{
+  width:100%;
+  padding:12px 15px;
+  border:none;
+  border-radius:25px;
+  font-size:16px;
+  outline:none;
+}
+
+.cart-btn{
+  background:#00d084;
+  color:#111;
+  border:none;
+  padding:12px 16px;
+  border-radius:10px;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.hero{
+  background:linear-gradient(135deg,#111827,#1f2937);
+  color:white;
+  text-align:center;
+  padding:70px 20px;
+}
+
+.hero h1{
+  font-size:40px;
+  margin-bottom:15px;
+}
+
+.hero p{
+  font-size:18px;
+  color:#d1d5db;
+}
+
+.container{
+  width:90%;
+  max-width:1200px;
+  margin:auto;
+  padding:40px 0;
+}
+
+.section-title{
+  font-size:28px;
+  margin-bottom:25px;
+}
+
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+
+.product{
+  background:white;
+  border-radius:15px;
+  overflow:hidden;
+  box-shadow:0 5px 20px rgba(0,0,0,.08);
+  transition:.2s;
+}
+
+.product:hover{
+  transform:translateY(-5px);
+}
+
+.product img{
+  width:100%;
+  height:220px;
+  object-fit:cover;
+}
+
+.product-info{
+  padding:15px;
+}
+
+.product h3{
+  margin-bottom:10px;
+}
+
+.price{
+  color:#00a86b;
+  font-size:20px;
+  font-weight:bold;
+  margin-bottom:15px;
+}
+
+.buy{
+  width:100%;
+  border:none;
+  background:#111827;
+  color:white;
+  padding:12px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:16px;
+}
+
+.buy:hover{
+  background:#00a86b;
+}
+
+.cart{
+  display:none;
+  position:fixed;
+  top:0;
+  right:0;
+  width:350px;
+  max-width:90%;
+  height:100vh;
+  background:white;
+  z-index:2000;
+  padding:25px;
+  box-shadow:-5px 0 20px rgba(0,0,0,.2);
+  overflow:auto;
+}
+
+.cart h2{
+  margin-bottom:20px;
+}
+
+.close{
+  float:right;
+  border:none;
+  background:#e5e7eb;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.cart-item{
+  border-bottom:1px solid #ddd;
+  padding:12px 0;
+}
+
+.cart-item button{
+  margin-top:8px;
+  background:#dc2626;
+  color:white;
+  border:none;
+  padding:6px 10px;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.total{
+  font-size:20px;
+  font-weight:bold;
+  margin:20px 0;
+}
+
+.order{
+  width:100%;
+  background:#00a86b;
+  border:none;
+  color:white;
+  padding:14px;
+  border-radius:8px;
+  font-size:17px;
+  cursor:pointer;
+}
+
+footer{
+  background:#111827;
+  color:#ccc;
+  text-align:center;
+  padding:25px;
+}
+
+@media(max-width:600px){
+  .top{
+    flex-wrap:wrap;
+  }
+
+  .search{
+    order:3;
+    flex-basis:100%;
+  }
+
+  .hero h1{
+    font-size:30px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="top">
+    <div class="logo">DMN01</div>
+
+    <div class="search">
+      <input type="text" id="search" placeholder="Məhsul axtar..." onkeyup="searchProducts()">
+    </div>
+
+    <button class="cart-btn" onclick="openCart()">
+      Səbət (<span id="cartCount">0</span>)
+    </button>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>DMN01 Online Mağaza</h1>
+  <p>İstədiyin məhsulu seç, səbətə əlavə et və sifariş ver.</p>
+</section>
+
+<main class="container">
+  <h2 class="section-title">Məhsullar</h2>
+
+  <div class="products" id="products">
+
+    <div class="product" data-name="Qara köynək">
+      <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80">
+      <div class="product-info">
+        <h3>Qara Köynək</h3>
+        <div class="price">25 AZN</div>
+        <button class="buy" onclick="addToCart('Qara Köynək',25)">Səbətə əlavə et</button>
+      </div>
+    </div>
+
+    <div class="product" data-name="Qulaqlıq">
+      <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80">
+      <div class="product-info">
+        <h3>Qulaqlıq</h3>
+        <div class="price">45 AZN</div>
+        <button class="buy" onclick="addToCart('Qulaqlıq',45)">Səbətə əlavə et</button>
+      </div>
+    </div>
+
+    <div class="product" data-name="Ağıllı saat">
+      <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80">
+      <div class="product-info">
+        <h3>Ağıllı Saat</h3>
+        <div class="price">80 AZN</div>
+        <button class="buy" onclick="addToCart('Ağıllı Saat',80)">Səbətə əlavə et</button>
+      </div>
+    </div>
+
+    <div class="product" data-name="İdman ayaqqabısı">
+      <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80">
+      <div class="product-info">
+        <h3>İdman Ayaqqabısı</h3>
+        <div class="price">95 AZN</div>
+        <button class="buy" onclick="addToCart('İdman Ayaqqabısı',95)">Səbətə əlavə et</button>
+      </div>
+    </div>
+
+    <div class="product" data-name="Çanta">
+      <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80">
+      <div class="product-info">
+        <h3>Çanta</h3>
+        <div class="price">55 AZN</div>
+        <button class="buy" onclick="addToCart('Çanta',55)">Səbətə əlavə et</button>
+      </div>
+    </div>
+
+    <div class="product" data-name="Telefon">
+      <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80">
+      <div class="product-info">
+        <h3>Telefon</h3>
+        <div class="price">500 AZN</div>
+        <button class="buy" onclick="addToCart('Telefon',500)">Səbətə əlavə et</button>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<div class="cart" id="cart">
+  <button class="close" onclick="closeCart()">X</button>
+  <h2>Sənin Səbətin</h2>
+
+  <div id="cartItems"></div>
+
+  <div class="total">
+    Cəmi: <span id="total">0</span> AZN
+  </div>
+
+  <button class="order" onclick="orderNow()">Sifariş ver</button>
+</div>
+
+<footer>
+  © 2026 DMN01 — Bütün hüquqlar qorunur
+</footer>
+
+<script>
+let cart = [];
+
+function addToCart(name, price){
+  cart.push({name, price});
+  updateCart();
+  alert(name + " səbətə əlavə edildi!");
+}
+
+function updateCart(){
+  document.getElementById("cartCount").innerText = cart.length;
+
+  let items = document.getElementById("cartItems");
+  items.innerHTML = "";
+
+  let total = 0;
+
+  cart.forEach((item,index)=>{
+    total += item.price;
+
+    items.innerHTML += `
+      <div class="cart-item">
+        <b>${item.name}</b><br>
+        ${item.price} AZN<br>
+        <button onclick="removeItem(${index})">Sil</button>
+      </div>
+    `;
+  });
+
+  document.getElementById("total").innerText = total;
+}
+
+function removeItem(index){
+  cart.splice(index,1);
+  updateCart();
+}
+
+function openCart(){
+  document.getElementById("cart").style.display="block";
+}
+
+function closeCart(){
+  document.getElementById("cart").style.display="none";
+}
+
+function orderNow(){
+  if(cart.length === 0){
+    alert("Səbət boşdur!");
+    return;
+  }
+
+  let orderText = "Salam, DMN01 mağazasından sifariş vermək istəyirəm:%0A%0A";
+
+  cart.forEach(item=>{
+    orderText += item.name + " - " + item.price + " AZN%0A";
+  });
+
+  orderText += "%0ASifariş üçün mənimlə əlaqə saxlayın.";
+
+  window.location.href =
+  "https://wa.me/994506678781?text=" + orderText;
+}
+
+function searchProducts(){
+  let input = document.getElementById("search").value.toLowerCase();
+  let products = document.querySelectorAll(".product");
+
+  products.forEach(product=>{
+    let name = product.dataset.name.toLowerCase();
+
+    if(name.includes(input)){
+      product.style.display="block";
+    }else{
+      product.style.display="none";
+    }
+  });
+}
+</script>
+
+</body>
+  </html>
